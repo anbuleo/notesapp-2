@@ -33,7 +33,7 @@ function Task() {
         <div className="form_add_notes mt-4 p-2  rounded shadow">
         <div className="topic_add_notes d-flex justify-content-between p-2">
             <p style={{fontWeight:'600',fontSize:'32px', opacity:'80%'}}>Add Task </p>
-            <p onClick={()=>navigate('/home')}><i class="fa-solid fa-x"></i></p>
+            <p onClick={()=>navigate('/home')}><i className="fa-solid fa-x"></i></p>
         </div>
         <div className="tile_notes">
             <input
