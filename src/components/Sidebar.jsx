@@ -2,7 +2,7 @@ import React from 'react'
 // import { Link } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import { useLocation } from "react-router-dom";
-
+import logo from '../assets/logo_img.svg'
 
 function Sidebar() {
     let location = useLocation()
@@ -13,7 +13,7 @@ function Sidebar() {
 
   return   <div  className="sidebar  p-3   position-fixed ">
     <div  className="logo d-inline-flex p-2 mb-4 gap-2 ">
-        <div  className="logo_img"><img src="src/assets/logo_img.svg" alt="logo" /></div>
+        <div  className="logo_img"><img src={logo} alt="logo" /></div>
         <div  className="name_email">John Doe <br />johndoe@gmail.com</div>
     </div>
     <div  className="list d-flex flex-column gap-3">
