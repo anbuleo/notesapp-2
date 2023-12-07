@@ -1,62 +1,103 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { add } from '../redux/TaskSlice'
+
 
 function Task() {
-    let taskData = [
-        {
-            checked:true,
-            task:'File upload',
-            duration:'2 days left',
-            starFill:true
-        },
-        {
-            checked:false,
-            task:'System update',
-            duration:'5 days left',
-            starFill:true
-        },
-        {
-            checked:false,
-            task:'Quality check',
-            duration:'10 days left',
-            starFill:false
-        },
-        {
-            checked:false,
-            task:'Charger change',
-            duration:'12 days left',
-            starFill:false
-        }
-    ]
+  let task = useSelector((state)=>state.task)
+  let [taskData,setTaskData]=useState(task)
+  let fileRef = useRef(null)
+  let textA = useRef(null)
+  let tileRef = useRef(null)
+  let [title,setTitle] = useState("")
+  let [taskNote,setTaskNote] = useState("")
+  let dispatch = useDispatch(task)
+    // let taskData = [
+    //     {
+    //         checked:true,
+    //         task:'File upload',
+    //         duration:'2 days left',
+    //         starFill:true
+    //     },
+    //     {
+    //         checked:false,
+    //         task:'System update',
+    //         duration:'5 days left',
+    //         starFill:true
+    //     },
+    //     {
+    //         checked:false,
+    //         task:'Quality check',
+    //         duration:'10 days left',
+    //         starFill:false
+    //     },
+    //     {
+    //         checked:false,
+    //         task:'Charger change',
+    //         duration:'12 days left',
+    //         starFill:false
+    //     }
+    // ]
     let navigate = useNavigate()
+    let handleSubmit = (e)=>{
+      e.preventDefault();
+        let payload = {
+          checked:true,
+          task:title,
+          duration:'2 Days left',
+          starFill:true
+          // status: false
+        }
+        dispatch(add(payload))
+        console.log(payload,task)
+        setTaskData(task)
+    }
+   
+   
   return <div className="container-fluid">
         <div className="form_add_notes mt-4 p-2  rounded shadow">
         <div className="topic_add_notes d-flex justify-content-between p-2">
             <p style={{fontWeight:'600',fontSize:'32px', opacity:'80%'}}>Add Task </p>
             <p onClick={()=>navigate('/home')}><i className="fa-solid fa-x"></i></p>
         </div>
-        <div className="tile_notes">
+        <form ref={fileRef} onSubmit={handleSubmit}><div   className="tile_notes">
             <input
               className="form-control  titlePlaceholder"
               type="text"
               placeholder="Title"
-              // onChange={(e)=>setHeading(e.target.value)}
+              onChange={(e)=>setTitle(e.target.value)} onKeyDown={(e)=>{
+                if(e.key === 'Enter'){
+                  textA.current.focus()
+                }
+              }}
             /><br/>
+            
             <textarea
+              ref={textA}
               className="form-control  notesPlaceholder "
               rows="3"
               placeholder="Take a note...."
-            //   onChange={(e)=>setParagraph(e.target.value)}
-              ></textarea>
+              onChange={(e)=>setTaskNote(e.target.value)}
+              
+              
+              > 
+                  
+              </textarea>
+              <button className='rounded m-2'>&gt;</button>
+              
 
               <div>
                 <div className="task_time  m-2   align-items-center">
                <input type="datetime-local"  placeholder='Date/Time'  className='task_time'/>
+
                 </div>
                 
       
     </div>
         </div>
+        </form>
+        
     </div>
     <div className="my_task mt-4">
         <div className="mainTopic mb-4">

@@ -1,60 +1,97 @@
-import React from 'react'
-import { Form } from 'react-bootstrap'
+import React, { useEffect, useState } from 'react'
+// import { deleteU } from '../redux/DataSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { deleteU } from '../redux/DataSlice'
+import { useNavigate } from 'react-router-dom'
+
+
 
 
 function Home() {
-    let data = [
-        {
-            heading: "Feedback",
-            paragraph:
-              "Lorem ipsum dolor sit amet consectetur. Sollicitudin enim risus ut vestibulum morbi tellus sit ac. Fames auctor quisque et aliquam maecenas sed at vitae facilisis. .",
-            since: "5 days ago",
-          },
-          {
-            heading: "Weekly Task",
-            paragraph:
-              "Lorem ipsum dolor sit amet consectetur. Sollicitudin enim risus ut vestibulum morbi tellus sit ac. Fames auctor quisque et aliquam maecenas sed at vitae facilisis. .",
-            since: "2 weeks ago",
-          },
-          {
-            heading: "Lyrics",
-            paragraph:
-              "Lorem ipsum dolor sit amet consectetur. Sollicitudin enim risus ut vestibulum morbi tellus sit ac. Fames auctor quisque et aliquam maecenas sed at vitae facilisis. .",
-            since: "3 weeks ago",
-          },
-          {
-            heading: "Loren ipsum",
-            paragraph:
-              "Lorem ipsum dolor sit amet consectetur. Sollicitudin enim risus ut vestibulum morbi tellus sit ac. Fames auctor quisque et aliquam maecenas sed at vitae facilisis. .",
-            since: "3 weeks ago",
-          },
-    ]
-    let taskData = [
-        {
-            checked:true,
-            task:'File upload',
-            duration:'2 days left',
-            starFill:true
-        },
-        {
-            checked:false,
-            task:'System update',
-            duration:'5 days left',
-            starFill:true
-        },
-        {
-            checked:false,
-            task:'Quality check',
-            duration:'10 days left',
-            starFill:false
-        },
-        {
-            checked:false,
-            task:'Charger change',
-            duration:'12 days left',
-            starFill:false
-        }
-    ]
+  let note = useSelector((state)=>state.note)
+  let task = useSelector((state)=>state.task)
+  let [dataNote, setDataNote] = useState(note)
+  let [taskData,setTaskData]=useState(task)
+  let dispatch = useDispatch(note)
+  let navigate = useNavigate()
+
+  useEffect(()=>{
+    console.log(dataNote)
+  },[dataNote])
+
+  let handleDelete = (id)=>{
+    let si = [...note]
+    let nes =si.splice(id,1)
+    // setDataNote(nes)
+  
+    console.log(nes)
+  
+    let neDt =si.filter((news) => news.id !== id)
+    
+  
+   console.log(neDt)
+    setDataNote(neDt)  
+    //  let maping = si.filter((e)=>{
+    //   return e.id !== id
+      
+    //  })
+  
+    //  setDataNote(maping)
+     dispatch(deleteU(nes))  
+   
+  }
+    // let datas = [
+    //     {
+    //         heading: "Feedback",
+    //         paragraph:
+    //           "Lorem ipsum dolor sit amet consectetur. Sollicitudin enim risus ut vestibulum morbi tellus sit ac. Fames auctor quisque et aliquam maecenas sed at vitae facilisis. .",
+    //         since: "5 days ago",
+    //       },
+    //       {
+    //         heading: "Weekly Task",
+    //         paragraph:
+    //           "Lorem ipsum dolor sit amet consectetur. Sollicitudin enim risus ut vestibulum morbi tellus sit ac. Fames auctor quisque et aliquam maecenas sed at vitae facilisis. .",
+    //         since: "2 weeks ago",
+    //       },
+    //       {
+    //         heading: "Lyrics",
+    //         paragraph:
+    //           "Lorem ipsum dolor sit amet consectetur. Sollicitudin enim risus ut vestibulum morbi tellus sit ac. Fames auctor quisque et aliquam maecenas sed at vitae facilisis. .",
+    //         since: "3 weeks ago",
+    //       },
+    //       {
+    //         heading: "Loren ipsum",
+    //         paragraph:
+    //           "Lorem ipsum dolor sit amet consectetur. Sollicitudin enim risus ut vestibulum morbi tellus sit ac. Fames auctor quisque et aliquam maecenas sed at vitae facilisis. .",
+    //         since: "3 weeks ago",
+    //       },
+    // ]
+    // let taskData = [
+    //     {
+    //         checked:true,
+    //         task:'File upload',
+    //         duration:'2 days left',
+    //         starFill:true
+    //     },
+    //     {
+    //         checked:false,
+    //         task:'System update',
+    //         duration:'5 days left',
+    //         starFill:true
+    //     },
+    //     {
+    //         checked:false,
+    //         task:'Quality check',
+    //         duration:'10 days left',
+    //         starFill:false
+    //     },
+    //     {
+    //         checked:false,
+    //         task:'Charger change',
+    //         duration:'12 days left',
+    //         starFill:false
+    //     }
+    // ]
     
   return <div className="container-fluid p-4 " >
     <div className="home_page">
@@ -105,7 +142,7 @@ function Home() {
           </div>
         <div className="d-flex flex-row flex-nowrap overflow-auto " style={{paddingBottom:'5em'}}>
             {
-            data.map((e,i) => {
+            dataNote.map((e,i) => {
               return <div style={{ minWidth: "350px" }} key={i} >
                     <div
                       className="card  customCard shadow-lg rounded-lg"

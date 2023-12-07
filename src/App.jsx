@@ -3,6 +3,7 @@ import Sidebar from "./components/Sidebar"
 import Home from "./components/Home"
 import Notes from "./components/Notes"
 import Task from "./components/Task"
+import Edit from "./components/Edit"
 
 function App() {
 
@@ -13,9 +14,11 @@ function App() {
       <Sidebar />
       <Routes>
       
-        <Route  path="/home" element={<Home />} />
+        <Route  path="/" element={<Home />} />
         <Route path="/notes"  element={<Notes />} />
         <Route path="/task" element={<Task />} />
+        <Route path="*" element={ <Home />} />
+        <Route path="/edit/:id" element={<Edit />} />
         
       </Routes>
         </BrowserRouter>

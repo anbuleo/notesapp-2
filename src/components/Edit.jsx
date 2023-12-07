@@ -1,19 +1,19 @@
 
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import React, { useState, useEffect } from 'react';
 import { useSelector,useDispatch } from 'react-redux';
-import { add, deleteU } from '../redux/DataSlice';
+import { update} from '../redux/DataSlice';
 // import { Form } from 'react-router-dom';
-function Notes() {
+function Edit() {
+    let params = useParams()
     let note = useSelector((state)=>state.note)
-    let [heading , setNoteTitle]= useState("")
-    let [paragraph , setNoteParagraph] = useState("")
-    let [dataNote, setDataNote] = useState(note)
-    let dispatch = useDispatch(note)
-   useEffect(()=>{
-console.log(dataNote)
-   },[dataNote])
     
+    let [dataNote, setDataNote] = useState(note)
+    let {heading,paragraph} = dataNote[params.id]
+    let [headingn , setNoteTitle]= useState(heading)
+    let [paragraphn , setNoteParagraph] = useState(paragraph)
+    let dispatch = useDispatch(note)
+   
     let navigate =useNavigate()
     // const [date, setDate] = useState(new Date());
     // useEffect(() => {
@@ -26,51 +26,30 @@ console.log(dataNote)
    
 
 
-let handleDelete = (id)=>{
-  let si = [...note]
-  let nes =si.splice(id,1)
-  setDataNote(nes)
 
-  console.log(nes)
 
-  let neDt =si.filter((news) => news.id !== id)
-  
-
- 
-  //setDataNote(nes)  
-   let maping = si.filter((e)=>{
-    return e.id !== id
-    
-   })
-
-  //  setDataNote(maping)
-   dispatch(deleteU(nes))
-   
-
-   console.log(maping)
- 
- 
-}
 
       let createTask = (e)=>{
         e.preventDefault();
         let payload = {
-          heading,
-          paragraph,
-          since:' just now'
+            id:Number(params.id),
+          heading:headingn,
+          paragraph:paragraphn,
+          since:' just now',
+          
           // status: false
         }
-        dispatch(add(payload))
-        setDataNote(note)
-        
-        console.log(note)
+        dispatch(update(payload))
+        // setDataNote(note)
+        navigate('/')
+        // console.log()
     
       }
       useEffect(()=>{
-  
-        setDataNote(note)
-        dataNote
-      },[dataNote],[handleDelete])
+        headingn
+        
+        
+      })
     //   function handle(e){
     //     // console.log(e.timeStamp)
     //     // let newtime = Date.now()
@@ -137,8 +116,8 @@ let handleDelete = (id)=>{
   return <div className="container-fluid p-4 " >
     <div className="form_add_notes mt-4 p-2  rounded shadow">
         <div className="topic_add_notes d-flex justify-content-between p-2">
-            <p style={{fontWeight:'600',fontSize:'32px', opacity:'80%'}}>Add Note </p>
-            <p onClick={()=>navigate('/home')}><i class="fa-solid fa-x"></i></p>
+            <p style={{fontWeight:'600',fontSize:'32px', opacity:'80%'}}>Edit Note </p>
+            <p onClick={()=>navigate('/home')}><i className="fa-solid fa-x"></i></p>
         </div>
         <div className="tile_notes">
           <form onSubmit={createTask}>
@@ -146,12 +125,14 @@ let handleDelete = (id)=>{
               className="form-control  titlePlaceholder"
               type="text"
               placeholder="Title"
+              value={headingn}
               onChange={(e)=>setNoteTitle(e.target.value)}
             /><br/>
             <textarea
               className="form-control  notesPlaceholder "
               rows="3"
               placeholder="Take a note...."
+              value={paragraphn}
               onChange={(e)=>setNoteParagraph(e.target.value)}
               ></textarea>
               <button className='rounded '  type='submit'>&gt;</button>
@@ -201,31 +182,21 @@ let handleDelete = (id)=>{
                   />
                 </g>
               </svg>
-              &nbsp;My Notes
+              &nbsp;Preview
             </span>
-            <p
-              style={{
-                color: "var(--accent, #203562)",
-                fontSize: "16px",
-                fontWeight: "600",
-                padding: "1em 1em 0em 0.25em",
-                opacity:'70%'
-              }}
-            >
-              Recently viewed &nbsp;<span><i onClick={reload()} class="fa-solid fa-rotate-right"></i></span>
-            </p>
+            
           </div>
         <div className="d-flex flex-row flex-nowrap overflow-auto " style={{paddingBottom:'5em'}}>
             {
-            dataNote.map((e,i) => {
-              return <div style={{ minWidth: "350px" }} key={e.id} >
+            
+               <div style={{ minWidth: "350px" }}  >
                     <div
                       className="card  customCard shadow-lg rounded-lg"
                       style={{ maxWidth: "16rem", borderRadius: "16px" ,backgroundColor:'#F5F5F5'}}
                     >
                       <div
-                        className="card-header  d-flex justify-content-between "
-                        style={{
+                        className="card-header   "
+                        style={{ 
                             backgroundColor:'#F5F5F5',
                           borderBottom: "none !important",
                           color: "#203562",
@@ -235,67 +206,16 @@ let handleDelete = (id)=>{
                       >
                         <p
                           style={{
+                            textAlign: "center",
                             color: "var(--accent, #203562)",
                             fontSize: "24px",
                             fontWeight: "600",
                           }}
+                          
                         >
-                          {e.heading}{" "}
+                          {heading}{" "}
                         </p>
-                        <h5>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none" 
-                            onClick={()=>navigate(`/edit/${i}`)}
-                          >
-                            <mask
-                              id="mask0_209_47"
-                              style={{ maskType: "alpha" }}
-                              maskUnits="userSpaceOnUse"
-                              x="0"
-                              y="0"
-                              width="24"
-                              height="24"
-                            >
-                              <rect width="24" height="24" fill="#D9D9D9" />
-                            </mask>
-                            <g mask="url(#mask0_209_47)">
-                              <path
-                                d="M5 19H6.4L15.025 10.375L13.625 8.975L5 17.6V19ZM19.3 8.925L15.05 4.725L16.45 3.325C16.8333 2.94167 17.3042 2.75 17.8625 2.75C18.4208 2.75 18.8917 2.94167 19.275 3.325L20.675 4.725C21.0583 5.10833 21.2583 5.57083 21.275 6.1125C21.2917 6.65417 21.1083 7.11667 20.725 7.5L19.3 8.925ZM17.85 10.4L7.25 21H3V16.75L13.6 6.15L17.85 10.4Z"
-                                fill="#203562"
-                              />
-                            </g>
-                          </svg>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            onClick={()=>handleDelete(i)}
-                          >
-                            <mask
-                              id="mask0_209_51"
-                              style={{ maskType: "alpha" }}
-                              maskUnits="userSpaceOnUse"
-                              x="0"
-                              y="0"
-                              width="24"
-                              height="24"
-                            >
-                              <rect width="24" height="24" fill="#D9D9D9" />
-                            </mask>
-                            <g mask="url(#mask0_209_51)">
-                              <path
-                                d="M7 21C6.45 21 5.97917 20.8042 5.5875 20.4125C5.19583 20.0208 5 19.55 5 19V6H4V4H9V3H15V4H20V6H19V19C19 19.55 18.8042 20.0208 18.4125 20.4125C18.0208 20.8042 17.55 21 17 21H7ZM17 6H7V19H17V6ZM9 17H11V8H9V17ZM13 17H15V8H13V17Z"
-                                fill="#203562"
-                              />
-                            </g>
-                          </svg>
-                        </h5>
+                        
                       </div>
                       <div className="card-body">
                         <p
@@ -306,7 +226,7 @@ let handleDelete = (id)=>{
                             fontWeight: "500",
                           }}
                         >
-                          {e.paragraph}
+                          {paragraph}
                         </p>
                       </div>
                       <div
@@ -321,18 +241,18 @@ let handleDelete = (id)=>{
                             opacity: "0.6",
                           }}
                         >
-                          {e.since}
+                          {'Just Now'}
                         </p>
                       </div>
                     </div>
                   </div>
                 
               
-            })}
+            }
           </div>
         </div>
   </div>
 
 }
 
-export default Notes
+export default Edit
