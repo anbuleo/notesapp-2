@@ -134,8 +134,8 @@ function Edit() {
               placeholder="Take a note...."
               value={paragraphn}
               onChange={(e)=>setNoteParagraph(e.target.value)}
-              ></textarea>
-              <button className='rounded '  type='submit'>&gt;</button>
+              ></textarea><br />
+              <button className='rounded btn btn-outline-primary'  type='submit' > Add </button>
              </form>
               <div>
                 <div className="time_day   m-2   align-items-center">

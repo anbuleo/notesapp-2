@@ -5,6 +5,7 @@ import { useSelector,useDispatch } from 'react-redux';
 import { add, deleteU } from '../redux/DataSlice';
 // import { Form } from 'react-router-dom';
 function Notes() {
+  let navigate = useNavigate()
     let note = useSelector((state)=>state.note)
     let [heading , setNoteTitle]= useState("")
     let [paragraph , setNoteParagraph] = useState("")
@@ -14,7 +15,7 @@ function Notes() {
 console.log(dataNote)
    },[dataNote])
     
-    let navigate =useNavigate()
+    
     // const [date, setDate] = useState(new Date());
     // useEffect(() => {
     //     const interval = setInterval(() => {
@@ -62,7 +63,8 @@ let handleDelete = (id)=>{
         }
         dispatch(add(payload))
         setDataNote(note)
-        
+
+        navigate('/')
         console.log(note)
     
       }
@@ -134,7 +136,7 @@ let handleDelete = (id)=>{
     //         since: "3 weeks ago",
     //       },
     // ]
-  return <div className="container-fluid p-4 " >
+  return <div className="container-fluid " >
     <div className="form_add_notes mt-4 p-2  rounded shadow">
         <div className="topic_add_notes d-flex justify-content-between p-2">
             <p style={{fontWeight:'600',fontSize:'32px', opacity:'80%'}}>Add Note </p>
@@ -154,7 +156,7 @@ let handleDelete = (id)=>{
               placeholder="Take a note...."
               onChange={(e)=>setNoteParagraph(e.target.value)}
               ></textarea>
-              <button className='rounded '  type='submit'>&gt;</button>
+              <button className='rounded btn btn-outline-primary'  type='submit' > Add </button>
              </form>
               <div>
                 <div className="time_day   m-2   align-items-center">
