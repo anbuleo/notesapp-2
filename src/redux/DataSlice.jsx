@@ -42,7 +42,7 @@ export const dataReducer = createSlice({
      
          console.log(id)
                 action.payload.id=id
-                state.push(action.payload)
+                state.unshift(action.payload)
                 console.log(action.payload)
                 console.log(state[4])
 

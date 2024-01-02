@@ -84,7 +84,8 @@ function Task() {
               > 
                   
               </textarea>
-              <button className='rounded m-2'>&gt;</button>
+              <br />
+              <button className='rounded btn btn-outline-primary'  type='submit' > Add </button>
               
 
               <div>
