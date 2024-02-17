@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { add } from '../redux/TaskSlice'
+import { toast } from 'react-toastify'
 
 
 function Task() {
@@ -49,9 +50,23 @@ function Task() {
           starFill:true
           // status: false
         }
-        dispatch(add(payload))
-        console.log(payload,task)
-        setTaskData(task)
+        if(payload.task.length > 0 &&taskNote.length>0){
+          dispatch(add(payload))
+          setTaskData(task)
+          toast.success("Task added Success")
+          navigate('/')
+        }
+        else if(payload.task.length === 0){
+          toast.warning("Unable to add with empty Task Title!")
+        }
+        else if(taskNote.length === 0){
+          toast.warning("Unable to add with empty Task Note!")
+        }
+        
+        // dispatch(add(payload))
+        // console.log(payload,task)
+        
+        
     }
    
    
@@ -77,7 +92,7 @@ function Task() {
               ref={textA}
               className="form-control  notesPlaceholder "
               rows="3"
-              placeholder="Take a note...."
+              placeholder="Take a Task...."
               onChange={(e)=>setTaskNote(e.target.value)}
               
               

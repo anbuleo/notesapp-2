@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import React, { useState, useEffect } from 'react';
 import { useSelector,useDispatch } from 'react-redux';
 import { add, deleteU } from '../redux/DataSlice';
+import { Toast } from 'bootstrap';
+import { ToastContainer } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 // import { Form } from 'react-router-dom';
 function Notes() {
   let navigate = useNavigate()
@@ -61,10 +64,19 @@ let handleDelete = (id)=>{
           since:' just now'
           // status: false
         }
-        dispatch(add(payload))
-        setDataNote(note)
-
-        navigate('/')
+        if(payload.heading.length > 0 && payload.paragraph.length >0){
+          dispatch(add(payload))
+          setDataNote(note)
+          toast.success("Notes added Success")
+          navigate('/')
+        }
+        else if(payload.heading.length === 0){
+          toast.warning("Unable to add with empty heading!")
+        }
+        else if(payload.paragraph.length === 0){
+          toast.warning("Unable to add with empty Paragraph!")
+        }
+        
         console.log(note)
     
       }
